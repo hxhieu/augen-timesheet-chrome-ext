@@ -1,15 +1,14 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <Container id="app">
     <router-view />
-  </div>
+  </Container>
 </template>
 
-<style lang="scss">
-#app {
+<script lang="ts">
+import styled from 'vue-styled-components'
+import { createComponent } from '@vue/composition-api'
+
+const Container = styled.div`
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -17,16 +16,10 @@
   width: 750px;
   height: 540px;
   overflow: hidden;
-  padding: 10px;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+  padding: 20px;
+`
+
+export default createComponent({
+  components: { Container },
+})
+</script>
