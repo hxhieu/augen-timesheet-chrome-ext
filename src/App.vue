@@ -1,25 +1,40 @@
 <template>
-  <Container id="app">
-    <router-view />
-  </Container>
+  <ThemeProvider :theme="theme">
+    <Container id="app">
+      <router-view />
+    </Container>
+  </ThemeProvider>
 </template>
 
 <script lang="ts">
 import styled from 'vue-styled-components'
-import { createComponent } from '@vue/composition-api'
+import { createComponent, reactive } from '@vue/composition-api'
+import { ThemeProvider } from 'vue-styled-components'
 
 const Container = styled.div`
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   width: 750px;
   height: 540px;
   overflow: hidden;
   padding: 20px;
+  background: ${(props: any) => props.theme.bg};
+  color: ${(props: any) => props.theme.colour};
 `
 
 export default createComponent({
-  components: { Container },
+  components: { ThemeProvider, Container },
+  setup() {
+    // TODO: Hook to the store
+    const theme = reactive({
+      bg: '#333',
+      colour: '#f0f0f0',
+    })
+
+    return {
+      theme,
+    }
+  },
 })
 </script>
