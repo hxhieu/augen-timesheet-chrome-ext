@@ -2,11 +2,17 @@
   "name": "Augen Timesheet",
   "version": "1.0",
   "description": "Augen Timesheet extension",
+  "permissions": [
+    "declarativeContent"
+  ],
   "background": {
     "scripts": [
       "background.js"
     ],
     "persistent": false
+  },
+  "page_action": {
+    "default_popup": "index.html"
   },
   "manifest_version": 2
 }
