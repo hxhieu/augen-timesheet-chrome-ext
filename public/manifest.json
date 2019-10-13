@@ -1,0 +1,12 @@
+{
+  "name": "Augen Timesheet",
+  "version": "1.0",
+  "description": "Augen Timesheet extension",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "manifest_version": 2
+}
