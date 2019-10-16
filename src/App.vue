@@ -1,6 +1,8 @@
 <template>
   <ThemeProvider :theme="theme">
     <Container id="app">
+      <h1>HELLO</h1>
+      <el-button>Click</el-button>
       <router-view />
     </Container>
   </ThemeProvider>
@@ -28,8 +30,8 @@ export default createComponent({
   setup() {
     // TODO: Hook to the store
     const theme = reactive({
-      bg: '#333',
-      colour: '#f0f0f0',
+      bg: '#f0f0f0',
+      colour: '#333',
     })
 
     return {
