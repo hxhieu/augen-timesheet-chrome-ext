@@ -1,8 +1,9 @@
 <template>
   <ThemeProvider :theme="theme">
     <Container id="app">
-      <h1>HELLO</h1>
-      <el-button>Click</el-button>
+      <h1>HELLO WORLD</h1>
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
       <router-view />
     </Container>
   </ThemeProvider>

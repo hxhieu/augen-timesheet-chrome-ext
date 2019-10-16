@@ -2,8 +2,10 @@
   "name": "Augen Timesheet",
   "version": "1.0",
   "description": "Augen Timesheet extension",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
-    "declarativeContent"
+    "declarativeContent",
+    "https://intranet.augensoftwaregroup.com/"
   ],
   "background": {
     "scripts": [

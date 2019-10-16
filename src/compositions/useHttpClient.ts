@@ -17,14 +17,15 @@ const get = async (endpoint: string, query?: any): Promise<IHttpResponse> =>
         Object.keys(query).forEach(x => {
           url += `${x}=${encodeURIComponent(query[x])}&`
         })
-        url = url.substring(0, endpoint.length - 1)
+        url = url.substring(0, url.length - 1)
       }
 
-      const { status, data } = await client.get(url)
-      return {
+      const response = await client.get(url)
+      const { status, data } = response
+      return resolve({
         status,
         data,
-      }
+      })
     } catch (err) {
       resolve({
         status: err.status,
@@ -33,7 +34,7 @@ const get = async (endpoint: string, query?: any): Promise<IHttpResponse> =>
     }
   })
 
-export const useHttpClient = (endpoint: TimesheetApiEndpoint, query?: any) => {
+export const useHttpClient = (endpoint: TimesheetApiEndpoint) => {
   return {
     get: (query?: any) => get(endpoint, query),
   }
