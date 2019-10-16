@@ -2,7 +2,8 @@
   <ThemeProvider :theme="theme">
     <Container id="app">
       <h1>HELLO WORLD</h1>
-      <router-link to="/">Home</router-link>
+      <el-button>Click</el-button>
+      <router-link to="/index.html">Home</router-link>
       <router-link to="/about">About</router-link>
       <router-view />
     </Container>

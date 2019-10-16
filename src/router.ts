@@ -8,7 +8,8 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      // https://stackoverflow.com/questions/44530237/use-vuerouter-and-vue-js-in-chrome-extension-issues-with-path-segments
+      path: '/index.html',
       name: 'home',
       component: () =>
         import(/* webpackChunkName: "views-home" */ './views/Home.vue'),
