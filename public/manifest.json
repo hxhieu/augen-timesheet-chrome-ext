@@ -5,7 +5,8 @@
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": [
     "declarativeContent",
-    "https://intranet.augensoftwaregroup.com/"
+    "https://intranet.augensoftwaregroup.com/",
+    "http://localhost:5000/"
   ],
   "background": {
     "scripts": [

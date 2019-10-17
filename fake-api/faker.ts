@@ -1,0 +1,39 @@
+import { random, lorem, company, commerce } from 'faker'
+import moment from 'moment'
+
+const { number: randomInt, boolean: randomBool, alphaNumeric } = random
+
+const code = ['CODIG', 'PLAN', 'MEETG', 'DAILY', 'ANLYS']
+
+const getRandomCode = () => code[randomInt(4)]
+
+const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
+  const d = moment(date, 'dd-mm-yyyy')
+  const count = randomInt({ min: 1, max: 6 })
+  const result: ITimesheet[] = []
+  for (let i = 0; i < count; i++) {
+    result.push({
+      Charge: randomBool() ? undefined : 'N/C',
+      Code: getRandomCode(),
+      Description: lorem.sentence(),
+      End: d.add(4, 'hours').toDate(),
+      EndText: '',
+      Hours: 4,
+      OrganizationName: company.companyName(),
+      Phase: '01',
+      Planned: true,
+      PlannedText: 'Yes',
+      ProjectId: randomInt(90000),
+      ProjectName: commerce.productName(),
+      RateId: randomInt(90000),
+      RateName: commerce.productName(),
+      Ref: alphaNumeric(3).toUpperCase(),
+      Start: d.toDate(),
+      StartText: '',
+      TimesheetId: randomInt(90000),
+    })
+  }
+  return result
+}
+
+export { fakeTimesheetByLoginAndDate }
