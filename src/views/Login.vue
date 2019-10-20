@@ -1,7 +1,10 @@
 <template>
   <Container>
     <HelpText>{{ helpText }}</HelpText>
-    <p v-if="!isChecking">Go to Timesheet and login first</p>
+    <p v-if="!isChecking">
+      Go to <a :href="`${hostUrl}/Timesheet2`" target="_blank">Timesheet</a> and
+      login first
+    </p>
   </Container>
 </template>
 
@@ -31,21 +34,35 @@ export default createComponent({
   setup() {
     const helpText = ref('Checking your login...')
     const isChecking = ref(true)
+    const hostUrl = ref(process.env.VUE_APP_HOST_URL)
     const { router } = useRouter()
-
     const { loggedIn } = useState('Shell', ['loggedIn'])
+
     if (loggedIn.value) {
       router.push('/home')
     } else {
-      const { get } = useHttpClient()
-      const loginResult = get({
-        employeeID: 'aaa',
-      })
+      // Check if the .NET auth cookie is available
+      chrome.cookies.get(
+        {
+          name: 'ASP.NET_SessionId',
+          url: hostUrl.value,
+        },
+        (cookie: chrome.cookies.Cookie | null) => {
+          // Yes, go to home screen
+          if (cookie && cookie.value) {
+            router.push('/home')
+          } else {
+            helpText.value = 'You are not logged in'
+            isChecking.value = false
+          }
+        },
+      )
     }
 
     return {
       helpText,
       isChecking,
+      hostUrl,
     }
   },
 })

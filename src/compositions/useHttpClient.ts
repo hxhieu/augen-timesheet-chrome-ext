@@ -3,9 +3,7 @@ import * as axios from 'axios'
 
 const client = axios.default.create({
   withCredentials: true,
-  baseURL:
-    process.env.VUE_APP_API_BASEURL ||
-    'https://intranet.augensoftwaregroup.com/Timesheet2/api',
+  baseURL: `${process.env.VUE_APP_HOST_URL}/api`,
 })
 
 const get = async (endpoint: string, query?: any): Promise<IHttpResponse> =>
