@@ -2,7 +2,7 @@ import fastify from 'fastify'
 import cors from 'fastify-cors'
 import { NotFoundError } from 'restify-errors'
 import { Server, IncomingMessage, ServerResponse } from 'http'
-import { fakeTimesheetByLoginAndDate } from './faker'
+import { fakeTimesheetByLoginAndDate, fakeChangeSummary } from './faker'
 
 // Create a http server. We pass the relevant typings for our http version used.
 // By passing types we get correctly typed access to the underlying http objects in routes.
@@ -22,11 +22,12 @@ server.register(cors, {
 
 server.get('/api/timesheet', (request, reply) => {
   const {
-    query: { login, date },
+    query: { login, date, employeeID, periodStartDate, periodEndDate },
   } = request
   if (login && date) {
-    const timesheets = fakeTimesheetByLoginAndDate(date)
-    reply.code(200).send(JSON.stringify(timesheets))
+    reply.code(200).send(fakeTimesheetByLoginAndDate(date))
+  } else if (employeeID && periodStartDate && periodEndDate) {
+    reply.code(200).send(fakeChangeSummary(periodStartDate))
   } else {
     reply.code(404).send(new NotFoundError())
   }

@@ -26,3 +26,9 @@ interface ITimesheet {
   TimesheetId: number
   WorkItemId?: any
 }
+
+interface IChargeSummaryItem {
+  WeekDay: number
+  Charge: number
+  NonCharge: number
+}

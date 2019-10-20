@@ -36,4 +36,20 @@ const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
   return result
 }
 
-export { fakeTimesheetByLoginAndDate }
+const fakeChangeSummary = (periodStart: string): IChargeSummaryItem[] => {
+  const result: IChargeSummaryItem[] = []
+
+  for (let i = 1; i <= 7; i++) {
+    const fullDay = randomInt({ min: 6, max: 10 })
+    const charge = randomInt({ min: 0, max: fullDay })
+    result.push({
+      WeekDay: i,
+      Charge: charge,
+      NonCharge: fullDay - charge,
+    })
+  }
+
+  return result
+}
+
+export { fakeTimesheetByLoginAndDate, fakeChangeSummary }
