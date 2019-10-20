@@ -10,18 +10,15 @@ export default new Router({
     {
       // https://stackoverflow.com/questions/44530237/use-vuerouter-and-vue-js-in-chrome-extension-issues-with-path-segments
       path: '/index.html',
+      name: 'login',
+      component: () =>
+        import(/* webpackChunkName: "views-llgin" */ './views/Login.vue'),
+    },
+    {
+      path: '/home',
       name: 'home',
       component: () =>
         import(/* webpackChunkName: "views-home" */ './views/Home.vue'),
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "views-about" */ './views/About.vue'),
     },
   ],
 })

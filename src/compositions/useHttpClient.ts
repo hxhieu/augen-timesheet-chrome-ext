@@ -34,7 +34,7 @@ const get = async (endpoint: string, query?: any): Promise<IHttpResponse> =>
     }
   })
 
-export const useHttpClient = (endpoint: TimesheetApiEndpoint) => {
+export const useHttpClient = (endpoint: TimesheetApiEndpoint = 'timesheet') => {
   return {
     get: (query?: any) => get(endpoint, query),
   }
