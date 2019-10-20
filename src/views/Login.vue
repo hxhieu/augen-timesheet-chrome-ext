@@ -34,7 +34,10 @@ export default createComponent({
   setup() {
     const helpText = ref('Checking your login...')
     const isChecking = ref(true)
+
     const hostUrl = ref(process.env.VUE_APP_HOST_URL)
+    const cookieName = process.env.VUE_APP_HOST_COOKIE || 'ASP.NET_SessionId'
+
     const { router } = useRouter()
     const { loggedIn } = useState('Shell', ['loggedIn'])
 
@@ -44,7 +47,7 @@ export default createComponent({
       // Check if the .NET auth cookie is available
       chrome.cookies.get(
         {
-          name: 'ASP.NET_SessionId',
+          name: cookieName,
           url: hostUrl.value,
         },
         (cookie: chrome.cookies.Cookie | null) => {
