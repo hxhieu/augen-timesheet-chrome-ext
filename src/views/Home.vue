@@ -6,7 +6,7 @@
       }}</SummaryItem>
     </SummaryList> -->
     <apexchart
-      width="500"
+      width="100%"
       type="bar"
       :options="options"
       :series="series"
@@ -30,33 +30,73 @@ export default createComponent({
   name: 'Home',
   components: { Container, SummaryList, SummaryItem },
   setup() {
-    const summary = ref<IChargeSummaryItem>([])
     const options = ref({
+      colors: ['rgb(5, 124, 0)', 'rgb(253, 1, 0)'],
       chart: {
-        id: 'vuechart-example',
+        id: 'summary-chart',
+        stacked: true,
+        toolbar: {
+          show: false,
+        },
+        events: {
+          click: (event: any, chartContext: any, config: any) => {
+            console.log(config.dataPointIndex)
+          },
+        },
       },
+      // yaxis: {
+      //   tickAmount: 20,
+      // },
       xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
       },
     })
+    const series = ref([
+      {
+        name: 'N/C',
+        data: [],
+      },
+      {
+        name: 'Charge',
+        data: [],
+      },
+    ])
     const { get } = useHttpClient()
     const { employee } = useState('Shell', ['employee'])
 
-    const start = moment().startOf('isoWeek')
-    const end = start.add(7, 'd')
+    const start = moment()
+      .startOf('isoWeek')
+      .subtract(7, 'd')
+    const periodStartDate = `Mon ${start.format('DD MMM YYYY')}`
+    const end = start.add(6, 'd')
+    const periodEndDate = `Sun ${end.format('DD MMM YYYY')}`
 
     watch(async () => {
       const items = await get({
         employeeID: employee.value,
-        periodStartDate: start.format('DD-MM-YYYY'),
-        periodEndDate: end.format('DD-MM-YYYY'),
+        periodStartDate,
+        periodEndDate,
       })
-
-      summary.value = items.data
+      series.value = [
+        {
+          name: 'N/C',
+          data: items.data.map((x: IChargeSummaryItem) => x.NonCharge),
+        },
+        {
+          name: 'Charge',
+          data: items.data.map((x: IChargeSummaryItem) => x.Charge),
+        },
+      ]
+      // series.value[0].data = items.data.map(
+      //   (x: IChargeSummaryItem) => x.NonCharge,
+      // )
+      // series.value[1].data = items.data.map((x: IChargeSummaryItem) => x.Charge)
+      // console.log(series.value)
     })
 
     return {
-      summary,
+      options,
+      series,
     }
   },
 })

@@ -51,6 +51,7 @@ export default createComponent({
           url: hostUrl.value,
         },
         (cookie: chrome.cookies.Cookie | null) => {
+          console.log(cookie)
           // Yes, go to home screen
           if (cookie && cookie.value) {
             router.push('/home')
