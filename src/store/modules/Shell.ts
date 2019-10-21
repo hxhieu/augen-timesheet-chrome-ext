@@ -2,11 +2,14 @@ type ThemeName = 'light' | 'dark'
 interface IShellStore {
   theme: ThemeName
   loggedIn: boolean
+  employee: string
 }
 
 const state: IShellStore = {
   theme: 'dark',
   loggedIn: false,
+  // TODO: Read from user input
+  employee: 'hugh.hoang',
 }
 
 // Mutations are the ONLY guys that can change (mutate) the state directly

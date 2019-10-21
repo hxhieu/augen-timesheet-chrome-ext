@@ -1,5 +1,6 @@
 import { random, lorem, company, commerce } from 'faker'
 import moment from 'moment'
+import { ITimesheet, IChargeSummaryItem } from 'types'
 
 const { number: randomInt, boolean: randomBool, alphaNumeric } = random
 

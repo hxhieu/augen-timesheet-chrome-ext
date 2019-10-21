@@ -1,4 +1,4 @@
-import { TimesheetApiEndpoint, IHttpResponse } from '@/types'
+import { TimesheetApiEndpoint, IHttpResponse } from 'types'
 import * as axios from 'axios'
 
 const client = axios.default.create({

@@ -22,6 +22,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
+    "postinstall": "npm link ../types",
     "serve": "ts-node-dev --respawn --transpileOnly --no-notify server.ts"
   }
 }

@@ -32,3 +32,5 @@ interface IChargeSummaryItem {
   Charge: number
   NonCharge: number
 }
+
+export { ITimesheet, IChargeSummaryItem }
