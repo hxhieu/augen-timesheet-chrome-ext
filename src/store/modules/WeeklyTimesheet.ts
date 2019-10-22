@@ -2,18 +2,16 @@ import { ITimesheet } from 'types'
 import moment from 'moment'
 import { WEEKLY_SET_EMPLOYEE_TIMESHEET, WEEKLY_SET_WEEKSTART } from '../types'
 import { useHttpClient } from '@/compositions/useHttpClient'
+import { getWeekDays } from '@/utils'
 
 type IWeeklyRecord = { [key: string]: { [key: string]: ITimesheet[] } }
 
 interface IWeeklyTimesheetStore {
-  weekStart: Date
+  weekStart?: Date
   employees: IWeeklyRecord
 }
 
 const state: IWeeklyTimesheetStore = {
-  weekStart: moment()
-    .startOf('isoWeek')
-    .toDate(),
   employees: {},
 }
 
@@ -44,13 +42,15 @@ const actions = {
   fetchEmployeeWeekly: async (
     { commit }: { commit: any; state: IWeeklyTimesheetStore },
     login: string,
-    selectedDate: string | Date,
+    selectedDate?: Date,
   ) => {
-    let d = moment(selectedDate).startOf('isoWeek')
-    commit(WEEKLY_SET_WEEKSTART, d.toDate())
+    const start = moment(selectedDate || new Date())
+      .startOf('isoWeek')
+      .toDate()
+    commit(WEEKLY_SET_WEEKSTART, start)
+    const weekDays = getWeekDays(start)
     const { get } = useHttpClient()
-    for (let i = 0; i < 7; i++) {
-      const date = d.format('DD-MM-YYYY')
+    for (const date of weekDays) {
       const { status, error, data } = await get({
         login,
         date: date,
@@ -66,7 +66,6 @@ const actions = {
         // TODO: Alert error
         console.error(error)
       }
-      d.add(1, 'd')
     }
   },
 }

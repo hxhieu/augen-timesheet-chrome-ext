@@ -1,16 +1,11 @@
 <template>
   <Container>
-    <!-- <SummaryList>
-      <SummaryItem v-for="item in summary" :key="item.WeekDay">{{
-        item.Charge
-      }}</SummaryItem>
-    </SummaryList> -->
-    <apexchart
-      width="100%"
-      type="bar"
-      :options="options"
-      :series="series"
-    ></apexchart>
+    <TimesheetDayGauge
+      v-for="date in weekDays"
+      :key="date"
+      :date="date"
+      :employee="employee"
+    />
   </Container>
 </template>
 
@@ -21,87 +16,39 @@ import { IChargeSummaryItem, IHttpResponse } from 'types'
 import { useState, useActions } from '@u3u/vue-hooks'
 import moment from 'moment'
 import styled from 'vue-styled-components'
+import { getWeekDays } from '@/utils'
 
 const Container = styled.div``
-const SummaryList = styled.div``
-const SummaryItem = styled.div``
+
+const TimesheetDayGauge = () =>
+  import(
+    /* webpackChunkName: "containers-timesheet-daygauge" */ '@/containers/TimesheetDayGauge.vue'
+  )
 
 export default createComponent({
   name: 'Home',
-  components: { Container, SummaryList, SummaryItem },
+  components: { Container, TimesheetDayGauge },
   setup() {
-    const options = ref({
-      colors: ['rgb(5, 124, 0)', 'rgb(253, 1, 0)'],
-      chart: {
-        id: 'summary-chart',
-        stacked: true,
-        toolbar: {
-          show: false,
-        },
-        events: {
-          click: (event: any, chartContext: any, config: any) => {
-            console.log(config.dataPointIndex)
-          },
-        },
-      },
-      // yaxis: {
-      //   tickAmount: 20,
-      // },
-      xaxis: {
-        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      },
-    })
-    const series = ref([
-      {
-        name: 'N/C',
-        data: [],
-      },
-      {
-        name: 'Charge',
-        data: [],
-      },
-    ])
-    const { get } = useHttpClient()
-    const { employee } = useState('Shell', ['employee'])
+    const weekDays = ref<string[]>([])
+    const state = {
+      ...useState('Shell', ['employee']),
+      ...useState('WeeklyTimesheet', ['weekStart']),
+    }
+    const { weekStart, employee } = state
+
     const actions = {
       ...useActions('WeeklyTimesheet', ['fetchEmployeeWeekly']),
     }
     const { fetchEmployeeWeekly } = actions
     fetchEmployeeWeekly(employee.value)
 
-    const start = moment()
-      .startOf('isoWeek')
-      .subtract(7, 'd')
-    const periodStartDate = `Mon ${start.format('DD MMM YYYY')}`
-    const end = start.add(6, 'd')
-    const periodEndDate = `Sun ${end.format('DD MMM YYYY')}`
-
-    watch(async () => {
-      const items = await get({
-        employeeID: employee.value,
-        periodStartDate,
-        periodEndDate,
-      })
-      series.value = [
-        {
-          name: 'N/C',
-          data: items.data.map((x: IChargeSummaryItem) => x.NonCharge),
-        },
-        {
-          name: 'Charge',
-          data: items.data.map((x: IChargeSummaryItem) => x.Charge),
-        },
-      ]
-      // series.value[0].data = items.data.map(
-      //   (x: IChargeSummaryItem) => x.NonCharge,
-      // )
-      // series.value[1].data = items.data.map((x: IChargeSummaryItem) => x.Charge)
-      // console.log(series.value)
+    watch(weekStart, () => {
+      weekDays.value = getWeekDays(weekStart.value)
     })
 
     return {
-      options,
-      series,
+      weekDays,
+      employee,
     }
   },
 })
