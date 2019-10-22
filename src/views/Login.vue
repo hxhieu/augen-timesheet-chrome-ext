@@ -45,22 +45,27 @@ export default createComponent({
       router.push('/home')
     } else {
       // Check if the .NET auth cookie is available
-      chrome.cookies.get(
-        {
-          name: cookieName,
-          url: hostUrl.value,
-        },
-        (cookie: chrome.cookies.Cookie | null) => {
-          console.log(cookie)
-          // Yes, go to home screen
-          if (cookie && cookie.value) {
-            router.push('/home')
-          } else {
-            helpText.value = 'You are not logged in'
-            isChecking.value = false
-          }
-        },
-      )
+      if (chrome && chrome.cookies) {
+        chrome.cookies.get(
+          {
+            name: cookieName,
+            url: hostUrl.value,
+          },
+          (cookie: chrome.cookies.Cookie | null) => {
+            console.log(cookie)
+            // Yes, go to home screen
+            if (cookie && cookie.value) {
+              router.push('/home')
+            } else {
+              helpText.value = 'You are not logged in'
+              isChecking.value = false
+            }
+          },
+        )
+      } else {
+        // TODO: Local dev bypass
+        router.push('/home')
+      }
     }
 
     return {

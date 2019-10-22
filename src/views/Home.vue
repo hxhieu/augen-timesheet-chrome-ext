@@ -18,7 +18,7 @@
 import { createComponent, ref, watch } from '@vue/composition-api'
 import { useHttpClient } from '../compositions/useHttpClient'
 import { IChargeSummaryItem, IHttpResponse } from 'types'
-import { useState } from '@u3u/vue-hooks'
+import { useState, useActions } from '@u3u/vue-hooks'
 import moment from 'moment'
 import styled from 'vue-styled-components'
 
@@ -63,6 +63,11 @@ export default createComponent({
     ])
     const { get } = useHttpClient()
     const { employee } = useState('Shell', ['employee'])
+    const actions = {
+      ...useActions('WeeklyTimesheet', ['fetchEmployeeWeekly']),
+    }
+    const { fetchEmployeeWeekly } = actions
+    fetchEmployeeWeekly(employee.value)
 
     const start = moment()
       .startOf('isoWeek')

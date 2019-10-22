@@ -16,7 +16,7 @@ const server: fastify.FastifyInstance<
 })
 
 server.register(cors, {
-  origin: /^chrome-extension:/,
+  origin: [/^chrome-extension:/, /^http:\/\/localhost/],
   credentials: true,
 })
 
