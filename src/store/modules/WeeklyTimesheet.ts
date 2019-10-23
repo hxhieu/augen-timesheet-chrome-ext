@@ -50,22 +50,28 @@ const actions = {
     commit(WEEKLY_SET_WEEKSTART, start)
     const weekDays = getWeekDays(start)
     const { get } = useHttpClient()
+    // Bundle the requests
+    const requests = []
     for (const date of weekDays) {
-      const { status, error, data } = await get({
-        login,
-        date: date,
-      })
+      requests.push(
+        get({
+          login,
+          date: date,
+        }),
+      )
+    }
 
-      if (status === 200) {
-        commit(WEEKLY_SET_EMPLOYEE_TIMESHEET, {
-          employee: login,
-          date,
-          records: data,
-        })
-      } else {
-        // TODO: Alert error
-        console.error(error)
-      }
+    // Execute the bundle
+    const result = await Promise.all(requests)
+    const weekTimesheet = result.map(x => x.data)
+
+    // Update the state
+    for (let i = 0; i < weekDays.length; i++) {
+      commit(WEEKLY_SET_EMPLOYEE_TIMESHEET, {
+        employee: login,
+        date: weekDays[i],
+        records: weekTimesheet[i],
+      })
     }
   },
 }
@@ -73,6 +79,10 @@ const actions = {
 const getters = {
   weekStartDisplay: (state: IWeeklyTimesheetStore) =>
     moment(state.weekStart).format('DD MMM YYYY'),
+  getDayTimesheet: (state: IWeeklyTimesheetStore) => (
+    employee: string,
+    date: string,
+  ) => (state.employees[employee] && state.employees[employee][date]) || [],
 }
 
 export default {

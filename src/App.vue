@@ -1,9 +1,9 @@
 <template>
   <ThemeProvider :theme="theme">
     <TopBar />
-    <Container id="app">
+    <Main>
       <router-view />
-    </Container>
+    </Main>
   </ThemeProvider>
 </template>
 
@@ -13,7 +13,7 @@ import Cookies from 'js-cookie'
 import { createComponent, reactive } from '@vue/composition-api'
 import { ThemeProvider } from 'vue-styled-components'
 
-const Container = styled.div`
+const Main = styled.div`
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -29,7 +29,7 @@ const TopBar = () =>
   import(/* webpackChunkName: "containers-top-bar" */ './containers/TopBar.vue')
 
 export default createComponent({
-  components: { ThemeProvider, Container, TopBar },
+  components: { ThemeProvider, Main, TopBar },
   setup() {
     // TODO: Hook to the store
     const theme = reactive({

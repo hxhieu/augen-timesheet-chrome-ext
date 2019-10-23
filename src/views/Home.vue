@@ -26,7 +26,6 @@ const TimesheetDayGauge = () =>
   )
 
 export default createComponent({
-  name: 'Home',
   components: { Container, TimesheetDayGauge },
   setup() {
     const weekDays = ref<string[]>([])
