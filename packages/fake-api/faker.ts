@@ -10,7 +10,7 @@ const getRandomCode = () => code[randomInt(4)]
 
 const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
   const d = moment(date, 'dd-mm-yyyy')
-  const count = randomInt({ min: 1, max: 6 })
+  const count = randomInt({ min: 1, max: 4 })
   const result: ITimesheet[] = []
   for (let i = 0; i < count; i++) {
     result.push({
@@ -19,7 +19,7 @@ const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
       Description: lorem.sentence(),
       End: d.add(4, 'hours').toDate(),
       EndText: '',
-      Hours: 4,
+      Hours: randomInt({ min: 1, max: 4 }),
       OrganizationName: company.companyName(),
       Phase: '01',
       Planned: true,
