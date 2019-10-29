@@ -1,6 +1,7 @@
 import { random, lorem, company, commerce } from 'faker'
 import moment from 'moment'
 import { ITimesheet, IChargeSummaryItem } from 'types'
+import randomColour from 'randomcolor'
 
 const { number: randomInt, boolean: randomBool, alphaNumeric } = random
 
@@ -32,6 +33,7 @@ const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
       Start: d.toDate(),
       StartText: '',
       TimesheetId: randomInt(90000),
+      Colour: randomColour(),
     })
   }
   return result

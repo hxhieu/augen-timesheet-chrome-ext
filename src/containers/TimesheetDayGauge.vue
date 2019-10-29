@@ -1,21 +1,25 @@
 <template>
   <Container>
-    <TimesheetBlock
-      v-for="record in records"
-      :key="record.TimesheetId"
-      :duration="record.Hours"
-    />
+    <Draggable class="gauge-container" v-model="records" v-bind="dragOptions">
+      <transition-group type="transition" class="gauge-group">
+        <TimesheetBlock
+          v-for="record in records"
+          :key="record.TimesheetId"
+          :record="record"
+        />
+      </transition-group>
+    </Draggable>
   </Container>
 </template>
 
 <script lang="ts">
 import styled from 'vue-styled-components'
-import { createComponent, ref, computed } from '@vue/composition-api'
+import { createComponent, ref, computed, watch } from '@vue/composition-api'
 import { useGetters, useState } from '@u3u/vue-hooks'
 import { ITimesheet } from 'types'
+import Draggable from 'vuedraggable'
 
 const Container = styled.div`
-  display: flex;
   width: 100%;
   height: 50px;
   border: 1px solid #eee;
@@ -36,7 +40,7 @@ const TimesheetBlock = () =>
   )
 
 export default createComponent({
-  components: { Container, TimesheetBlock },
+  components: { Container, TimesheetBlock, Draggable },
   props: {
     employee: String,
     date: String,
@@ -48,11 +52,36 @@ export default createComponent({
     }
     const { getDayTimesheet } = state
     const { employee, date } = props
-    const records = computed(() => getDayTimesheet.value(employee, date))
+    const records = ref<ITimesheet[]>([])
+    const dragOptions = ref({
+      animation: 200,
+      group: 'description',
+      disabled: false,
+      ghostClass: 'ghost',
+    })
+
+    watch(
+      () => getDayTimesheet,
+      () => {
+        records.value = getDayTimesheet.value(employee, date)
+      },
+    )
 
     return {
       records,
+      dragOptions,
     }
   },
 })
 </script>
+
+<style scoped>
+.gauge-container,
+.gauge-group {
+  width: 100%;
+  height: 100%;
+}
+.gauge-group {
+  display: flex;
+}
+</style>

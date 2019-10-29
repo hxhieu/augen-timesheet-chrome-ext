@@ -21,6 +21,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.11.1.tgz#1fd7b821f798b7fa29f667a1be8f3442bb8922a3"
   integrity sha512-TJtwsqZ39pqcljJpajeoofYRfeZ7/I/OMUQ5pR4q5wOKf2ocrUvBAZUMhWsOvKx3dVc/aaV5GluBivt0sWqA5A==
 
+"@types/randomcolor@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@types/randomcolor/-/randomcolor-0.5.3.tgz#2030101c695dd1b048e82ba3d5e6d605b37b9c0c"
+  integrity sha512-eIhyxP1VKqLRNPrQ9yhsenCj8W+ZIzMrUZqjLCyy1KTV1noh0YPi0DWqTITG82buHVZpzKOf6CCznvZHRQIRPg==
+
 "@types/restify-errors@^4.3.3":
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/@types/restify-errors/-/restify-errors-4.3.3.tgz#2ae7d7e3f7cbf2117267d56daa8cf37ac113ba77"
@@ -624,6 +629,11 @@ random-int@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/random-int/-/random-int-2.0.1.tgz#d072fe298e2fd12a730edde7729168b7b88dcea3"
   integrity sha512-YALjWK2Rt9EMIv9BF/3mvlzFWQathsvb5UZmN1QmhfIOfcQYXc/UcLzg0ablqesSBpBVLt2Tlwv/eTuBh4LXUQ==
+
+randomcolor@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/randomcolor/-/randomcolor-0.5.4.tgz#df615b13f25b89ea58c5f8f72647f0a6f07adcc3"
+  integrity sha512-nYd4nmTuuwMFzHL6W+UWR5fNERGZeVauho8mrJDUSXdNDbao4rbrUwhuLgKC/j8VCS5+34Ria8CsTDuBjrIrQA==
 
 read-pkg-up@^1.0.1:
   version "1.0.1"

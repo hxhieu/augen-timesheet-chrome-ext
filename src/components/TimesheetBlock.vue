@@ -7,7 +7,6 @@ import styled from 'vue-styled-components'
 import { createComponent, ref, computed } from '@vue/composition-api'
 import { useGetters, useState } from '@u3u/vue-hooks'
 import { ITimesheet } from 'types'
-import randomColour from 'randomcolor'
 
 const Container = styled.div`
   background: #0aa;
@@ -19,12 +18,12 @@ const Container = styled.div`
 export default createComponent({
   components: { Container },
   props: {
-    duration: Number,
+    record: Object,
   },
   setup(props) {
-    const { duration } = props
-    const width = computed(() => `${(duration || 0) * 40}px`)
-    const background = ref(randomColour())
+    const record = props.record as ITimesheet
+    const width = computed(() => `${(record.Hours || 0) * 40}px`)
+    const background = ref(record.Colour)
 
     return {
       width,

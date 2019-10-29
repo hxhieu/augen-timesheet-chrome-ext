@@ -25,6 +25,7 @@ interface ITimesheet {
   StartText: string
   TimesheetId: number
   WorkItemId?: any
+  Colour: string
 }
 
 interface IChargeSummaryItem {
