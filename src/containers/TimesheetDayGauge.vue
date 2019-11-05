@@ -1,14 +1,16 @@
 <template>
   <Container>
-    <Draggable class="gauge-container" v-model="records" v-bind="dragOptions">
+    <TimesheetBlock
+      v-for="(record, idx) in records"
+      :key="record.TimesheetId"
+      :record="record"
+      :last="idx === records.length-1"
+    />
+    <!-- <Draggable class="gauge-container" v-model="records" v-bind="dragOptions">
       <transition-group type="transition" class="gauge-group">
-        <TimesheetBlock
-          v-for="record in records"
-          :key="record.TimesheetId"
-          :record="record"
-        />
+        
       </transition-group>
-    </Draggable>
+    </Draggable>-->
   </Container>
 </template>
 
@@ -20,6 +22,7 @@ import { ITimesheet } from 'types'
 import Draggable from 'vuedraggable'
 
 const Container = styled.div`
+  display: flex;
   width: 100%;
   height: 50px;
   border: 1px solid #eee;
