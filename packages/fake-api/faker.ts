@@ -1,16 +1,17 @@
 import { random, lorem, company, commerce } from 'faker'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { ITimesheet, IChargeSummaryItem } from 'types'
 import randomColour from 'randomcolor'
 
 const { number: randomInt, boolean: randomBool, alphaNumeric } = random
+dayjs.Ls.en.weekStart = 1
 
 const code = ['CODIG', 'PLAN', 'MEETG', 'DAILY', 'ANLYS']
 
 const getRandomCode = () => code[randomInt(4)]
 
 const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
-  const d = moment(date, 'dd-mm-yyyy')
+  const d = dayjs(date, 'dd-mm-yyyy')
   const count = randomInt({ min: 1, max: 4 })
   const result: ITimesheet[] = []
   for (let i = 0; i < count; i++) {
@@ -18,7 +19,7 @@ const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
       Charge: randomBool() ? undefined : 'N/C',
       Code: getRandomCode(),
       Description: lorem.sentence(),
-      End: d.add(4, 'hours').toDate(),
+      End: d.add(4, 'hour').toDate(),
       EndText: '',
       Hours: randomInt({ min: 1, max: 4 }),
       OrganizationName: company.companyName(),

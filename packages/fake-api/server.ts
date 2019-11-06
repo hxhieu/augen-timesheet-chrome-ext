@@ -2,7 +2,11 @@ import fastify from 'fastify'
 import cors from 'fastify-cors'
 import { NotFoundError } from 'restify-errors'
 import { Server, IncomingMessage, ServerResponse } from 'http'
+import dayjs from 'dayjs'
 import { fakeTimesheetByLoginAndDate, fakeChangeSummary } from './faker'
+
+// Week start Monday
+dayjs.Ls.en.weekStart = 1
 
 // Create a http server. We pass the relevant typings for our http version used.
 // By passing types we get correctly typed access to the underlying http objects in routes.

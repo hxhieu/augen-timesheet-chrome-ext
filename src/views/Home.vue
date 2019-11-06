@@ -14,7 +14,6 @@ import { createComponent, ref, computed } from '@vue/composition-api'
 import { useHttpClient } from '../compositions/useHttpClient'
 import { IChargeSummaryItem, IHttpResponse } from 'types'
 import { useState, useActions } from '@u3u/vue-hooks'
-import moment from 'moment'
 import styled from 'vue-styled-components'
 import { getWeekDays } from '@/utils'
 

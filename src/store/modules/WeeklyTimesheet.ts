@@ -1,6 +1,10 @@
 import { ITimesheet } from 'types'
-import moment from 'moment'
-import { WEEKLY_SET_EMPLOYEE_TIMESHEET, WEEKLY_SET_WEEKSTART } from '../types'
+import dayjs from 'dayjs'
+import {
+  WEEKLY_SET_EMPLOYEE_TIMESHEET,
+  WEEKLY_SET_WEEKSTART,
+  UPDATE_TIMESHEET_BLOCK,
+} from '../types'
 import { useHttpClient } from '@/compositions/useHttpClient'
 import { getWeekDays } from '@/utils'
 
@@ -36,6 +40,20 @@ const mutations = {
     }
     state.employees[employee][date] = records
   },
+  [UPDATE_TIMESHEET_BLOCK]: (
+    state: IWeeklyTimesheetStore,
+    {
+      employee,
+      timesheetId,
+      start,
+      end,
+    }: {
+      employee: string
+      timesheetId: number
+      start: Date
+      end: Date
+    },
+  ) => {},
 }
 
 const actions = {
@@ -44,8 +62,8 @@ const actions = {
     login: string,
     selectedDate?: Date,
   ) => {
-    const start = moment(selectedDate || new Date())
-      .startOf('isoWeek')
+    const start = dayjs(selectedDate || new Date())
+      .startOf('week')
       .toDate()
     commit(WEEKLY_SET_WEEKSTART, start)
     const weekDays = getWeekDays(start)
@@ -78,7 +96,7 @@ const actions = {
 
 const getters = {
   weekStartDisplay: (state: IWeeklyTimesheetStore) =>
-    moment(state.weekStart).format('DD MMM YYYY'),
+    dayjs(state.weekStart).format('DD MMM YYYY'),
   getDayTimesheet: (state: IWeeklyTimesheetStore) => (
     employee: string,
     date: string,
