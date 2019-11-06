@@ -13,13 +13,14 @@ const getRandomCode = () => code[randomInt(4)]
 const fakeTimesheetByLoginAndDate = (date: string): ITimesheet[] => {
   const d = dayjs(date, 'dd-mm-yyyy')
   const count = randomInt({ min: 1, max: 4 })
+  const hourDiff = randomInt({ min: 2, max: 6 })
   const result: ITimesheet[] = []
   for (let i = 0; i < count; i++) {
     result.push({
       Charge: randomBool() ? undefined : 'N/C',
       Code: getRandomCode(),
       Description: lorem.sentence(),
-      End: d.add(4, 'hour').toDate(),
+      End: d.add(hourDiff, 'hour').toDate(),
       EndText: '',
       Hours: randomInt({ min: 1, max: 4 }),
       OrganizationName: company.companyName(),

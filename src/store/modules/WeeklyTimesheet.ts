@@ -8,15 +8,23 @@ import {
 import { useHttpClient } from '@/compositions/useHttpClient'
 import { getWeekDays } from '@/utils'
 
+const arrayToObject = (array: any[], key: string) =>
+  array.reduce((obj, item) => {
+    obj[item[key]] = item
+    return obj
+  }, {})
+
 type IWeeklyRecord = { [key: string]: { [key: string]: ITimesheet[] } }
 
 interface IWeeklyTimesheetStore {
   weekStart?: Date
   employees: IWeeklyRecord
+  commit: number
 }
 
 const state: IWeeklyTimesheetStore = {
   employees: {},
+  commit: 0,
 }
 
 const mutations = {
@@ -38,22 +46,34 @@ const mutations = {
     if (!state.employees[employee]) {
       state.employees[employee] = {}
     }
-    state.employees[employee][date] = records
+    state.employees[employee][date] = arrayToObject(records, 'TimesheetId')
   },
   [UPDATE_TIMESHEET_BLOCK]: (
     state: IWeeklyTimesheetStore,
     {
       employee,
       timesheetId,
+      date,
       start,
       end,
     }: {
       employee: string
+      date: string
       timesheetId: number
       start: Date
       end: Date
     },
-  ) => {},
+  ) => {
+    const target =
+      state.employees[employee] &&
+      state.employees[employee][date] &&
+      state.employees[employee][date][timesheetId]
+    if (target) {
+      target.Start = start
+      target.End = end
+      state.commit += 1
+    }
+  },
 }
 
 const actions = {

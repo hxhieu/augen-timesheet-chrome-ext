@@ -12,6 +12,7 @@ import { useGetters, useState } from '@u3u/vue-hooks'
 import { ITimesheet } from 'types'
 import InteractEvent from '@interactjs/core/InteractEvent'
 import { ICssStyle } from '@/@types'
+import dayjs from 'dayjs'
 
 const Container = styled.div`
   height: 100%;
@@ -32,16 +33,20 @@ export default createComponent({
     record: Object,
     last: Boolean,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { last } = props
     const record = props.record as ITimesheet
+    const { TimesheetId: id } = record
 
     const elem = ref<VueComponent>()
     const containerStyle = ref<ICssStyle>({})
     const blockStyle = ref<ICssStyle>({})
 
+    const start = dayjs(record.Start)
+    const end = dayjs(record.End)
+
     blockStyle.value = {
-      width: `${(record.Hours || 0) * step}px`,
+      width: `${end.diff(start, 'hour') * step}px`,
       background: record.Colour,
     }
 
@@ -52,13 +57,31 @@ export default createComponent({
     onMounted(() => {
       const dom = elem.value && elem.value.$el
       const modifiers = interact.modifiers
+      const vm = this
       if (!dom || !modifiers) {
         return
       }
 
       const position = { x: 0, y: 0 }
+      const limits: Interact.Rect = {
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+      }
+      const offset: Interact.Point = {
+        x: 0,
+        y: 0,
+      }
+
       const snap100x100 = modifiers.snap({
-        targets: [interact.snappers.grid({ x: step, y: step })],
+        targets: [
+          interact.snappers &&
+            interact.snappers.grid({
+              x: step,
+              y: step,
+            }),
+        ],
         relativePoints: [{ x: 0.5, y: 0.5 }],
       })
       interact(dom)
@@ -75,12 +98,14 @@ export default createComponent({
           ],
           listeners: {
             move(event: InteractEvent) {
-              position.x += event.dx
-              position.y += event.dy
-              if (position.x < 0) {
-                position.x = 0
-              }
-              event.target.style.transform = `translate(${position.x}px, ${position.y}px)`
+              const { dx } = event
+              // position.x += event.dx
+              // position.y += event.dy
+              // if (position.x < 0) {
+              //   position.x = 0
+              // }
+              // event.target.style.transform = `translate(${position.x}px, ${position.y}px)`
+              emit('move', { id, dx })
             },
           },
         })
@@ -99,26 +124,32 @@ export default createComponent({
               endOnly: false,
             }),
           ],
-          listeners: {
-            resizemove(event: InteractEvent) {
-              console.log(event)
-            },
-          },
         })
-        .on('resizemove', event => {
-          console.log(event)
-          let { x, y } = event.target.dataset
+        .on('resizemove', (event: any) => {
+          const {
+            delta: { x },
+            edges: { left },
+          } = event
 
-          x = parseFloat(x) || 0
-          y = parseFloat(y) || 0
+          emit('size', { id, left, x })
 
-          Object.assign(event.target.style, {
-            width: `${event.rect.width}px`,
-            height: `${event.rect.height}px`,
-            //transform: `translate(${event.deltaRect.left}px, ${event.deltaRect.top}px)`,
-          })
+          // const deltaTime = Math.sign(x) * 15
 
-          Object.assign(event.target.dataset, { x, y })
+          // const newStart = left ? start.add(deltaTime, 'minute') : start
+          // const newEnd = left ? end : end.add(deltaTime, 'minute')
+          // console.log(newStart.format('HH:mm'), newEnd.format('HH:mm'))
+          // // let { x, y } = event.target.dataset
+
+          // // x = parseFloat(x) || 0
+          // // y = parseFloat(y) || 0
+
+          // // Object.assign(event.target.style, {
+          // //   width: `${event.rect.width}px`,
+          // //   height: `${event.rect.height}px`,
+          // //   //transform: `translate(${event.deltaRect.left}px, ${event.deltaRect.top}px)`,
+          // // })
+
+          // // Object.assign(event.target.dataset, { x, y })
         })
     })
 
