@@ -17,8 +17,8 @@ const Main = styled.div`
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 750px;
-  height: 500px;
+  width: 300px;
+  height: 300px;
   overflow: hidden;
   background: ${(props: any) => props.theme.bg};
   color: ${(props: any) => props.theme.colour};

@@ -2,7 +2,8 @@
   <Container>
     <HelpText>{{ helpText }}</HelpText>
     <p v-if="!isChecking">
-      Go to <a :href="`${hostUrl}/Timesheet2`" target="_blank">Timesheet</a> and
+      Go to
+      <a :href="`${hostUrl}/Timesheet2`" target="_blank">Timesheet</a> and
       login first
     </p>
   </Container>
@@ -35,7 +36,7 @@ export default createComponent({
     const helpText = ref('Checking your login...')
     const isChecking = ref(true)
 
-    const hostUrl = ref(process.env.VUE_APP_HOST_URL)
+    const hostUrl = ref('https://intranet.augensoftwaregroup.com')
     const cookieName = process.env.VUE_APP_HOST_COOKIE || 'ASP.NET_SessionId'
 
     const { router } = useRouter()

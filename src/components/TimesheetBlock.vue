@@ -54,104 +54,104 @@ export default createComponent({
       flex: last ? 1 : undefined,
     }
 
-    onMounted(() => {
-      const dom = elem.value && elem.value.$el
-      const modifiers = interact.modifiers
-      const vm = this
-      if (!dom || !modifiers) {
-        return
-      }
+    // onMounted(() => {
+    //   const dom = elem.value && elem.value.$el
+    //   const modifiers = interact.modifiers
+    //   const vm = this
+    //   if (!dom || !modifiers) {
+    //     return
+    //   }
 
-      const position = { x: 0, y: 0 }
-      const limits: Interact.Rect = {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-      }
-      const offset: Interact.Point = {
-        x: 0,
-        y: 0,
-      }
+    //   const position = { x: 0, y: 0 }
+    //   const limits: Interact.Rect = {
+    //     top: 0,
+    //     left: 0,
+    //     bottom: 0,
+    //     right: 0,
+    //   }
+    //   const offset: Interact.Point = {
+    //     x: 0,
+    //     y: 0,
+    //   }
 
-      const snap100x100 = modifiers.snap({
-        targets: [
-          interact.snappers &&
-            interact.snappers.grid({
-              x: step,
-              y: step,
-            }),
-        ],
-        relativePoints: [{ x: 0.5, y: 0.5 }],
-      })
-      interact(dom)
-        .draggable({
-          startAxis: 'x',
-          lockAxis: 'x',
-          modifiers: [
-            snap100x100,
-            modifiers.restrictRect({
-              restriction: 'parent',
-              // elementRect: { left: 110, right: 0, top: 1, bottom: 1 },
-              endOnly: false,
-            }),
-          ],
-          listeners: {
-            move(event: InteractEvent) {
-              const { dx } = event
-              // position.x += event.dx
-              // position.y += event.dy
-              // if (position.x < 0) {
-              //   position.x = 0
-              // }
-              // event.target.style.transform = `translate(${position.x}px, ${position.y}px)`
-              emit('move', { id, dx })
-            },
-          },
-        })
-        .resizable({
-          edges: {
-            top: false,
-            bottom: false,
-            left: true,
-            right: true,
-          },
-          modifiers: [
-            snap100x100,
-            modifiers.restrictRect({
-              restriction: 'parent',
-              // elementRect: { left: 110, right: 0, top: 1, bottom: 1 },
-              endOnly: false,
-            }),
-          ],
-        })
-        .on('resizemove', (event: any) => {
-          const {
-            delta: { x },
-            edges: { left },
-          } = event
+    //   const snap100x100 = modifiers.snap({
+    //     targets: [
+    //       interact.snappers &&
+    //         interact.snappers.grid({
+    //           x: step,
+    //           y: step,
+    //         }),
+    //     ],
+    //     relativePoints: [{ x: 0.5, y: 0.5 }],
+    //   })
+    //   interact(dom)
+    //     .draggable({
+    //       startAxis: 'x',
+    //       lockAxis: 'x',
+    //       modifiers: [
+    //         snap100x100,
+    //         modifiers.restrictRect({
+    //           restriction: 'parent',
+    //           // elementRect: { left: 110, right: 0, top: 1, bottom: 1 },
+    //           endOnly: false,
+    //         }),
+    //       ],
+    //       listeners: {
+    //         move(event: InteractEvent) {
+    //           const { dx } = event
+    //           // position.x += event.dx
+    //           // position.y += event.dy
+    //           // if (position.x < 0) {
+    //           //   position.x = 0
+    //           // }
+    //           // event.target.style.transform = `translate(${position.x}px, ${position.y}px)`
+    //           emit('move', { id, dx })
+    //         },
+    //       },
+    //     })
+    //     .resizable({
+    //       edges: {
+    //         top: false,
+    //         bottom: false,
+    //         left: true,
+    //         right: true,
+    //       },
+    //       modifiers: [
+    //         snap100x100,
+    //         modifiers.restrictRect({
+    //           restriction: 'parent',
+    //           // elementRect: { left: 110, right: 0, top: 1, bottom: 1 },
+    //           endOnly: false,
+    //         }),
+    //       ],
+    //     })
+    //     .on('resizemove', (event: any) => {
+    //       const {
+    //         delta: { x },
+    //         edges: { left },
+    //       } = event
 
-          emit('size', { id, left, x })
+    //       emit('size', { id, left, x })
 
-          // const deltaTime = Math.sign(x) * 15
+    //       // const deltaTime = Math.sign(x) * 15
 
-          // const newStart = left ? start.add(deltaTime, 'minute') : start
-          // const newEnd = left ? end : end.add(deltaTime, 'minute')
-          // console.log(newStart.format('HH:mm'), newEnd.format('HH:mm'))
-          // // let { x, y } = event.target.dataset
+    //       // const newStart = left ? start.add(deltaTime, 'minute') : start
+    //       // const newEnd = left ? end : end.add(deltaTime, 'minute')
+    //       // console.log(newStart.format('HH:mm'), newEnd.format('HH:mm'))
+    //       // // let { x, y } = event.target.dataset
 
-          // // x = parseFloat(x) || 0
-          // // y = parseFloat(y) || 0
+    //       // // x = parseFloat(x) || 0
+    //       // // y = parseFloat(y) || 0
 
-          // // Object.assign(event.target.style, {
-          // //   width: `${event.rect.width}px`,
-          // //   height: `${event.rect.height}px`,
-          // //   //transform: `translate(${event.deltaRect.left}px, ${event.deltaRect.top}px)`,
-          // // })
+    //       // // Object.assign(event.target.style, {
+    //       // //   width: `${event.rect.width}px`,
+    //       // //   height: `${event.rect.height}px`,
+    //       // //   //transform: `translate(${event.deltaRect.left}px, ${event.deltaRect.top}px)`,
+    //       // // })
 
-          // // Object.assign(event.target.dataset, { x, y })
-        })
-    })
+    //       // // Object.assign(event.target.dataset, { x, y })
+    //     })
+    // })
 
     return {
       containerStyle,

@@ -1,13 +1,13 @@
 <template>
   <Container>
-    <TimesheetBlock
+    <!-- <TimesheetBlock
       v-for="(record, idx) in records"
       :key="record.TimesheetId"
       :record="record"
       :last="idx === records.length - 1"
       @size="blockResize"
       @move="blockMove"
-    />
+    />-->
   </Container>
 </template>
 
