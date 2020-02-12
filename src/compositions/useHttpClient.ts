@@ -32,8 +32,28 @@ const get = async (endpoint: string, query?: any): Promise<IHttpResponse> =>
     }
   })
 
+const post = async (endpoint: string, payload: any): Promise<IHttpResponse> =>
+  new Promise<IHttpResponse>(async resolve => {
+    try {
+      let url: string = endpoint
+
+      const response = await client.post(url, payload)
+      const { status, data } = response
+      return resolve({
+        status,
+        data,
+      })
+    } catch (err) {
+      resolve({
+        status: err.status,
+        error: err.message,
+      })
+    }
+  })
+
 export const useHttpClient = (endpoint: TimesheetApiEndpoint = 'timesheet') => {
   return {
     get: (query?: any) => get(endpoint, query),
+    post: (data: any) => post(endpoint, data),
   }
 }

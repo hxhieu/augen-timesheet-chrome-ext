@@ -3,8 +3,8 @@
     <HelpText>{{ helpText }}</HelpText>
     <p v-if="!isChecking">
       Go to
-      <a :href="`${hostUrl}/Timesheet2`" target="_blank">Timesheet</a> and
-      login first
+      <a :href="`${hostUrl}/Timesheet2`" target="_blank">Timesheet</a> and login
+      first
     </p>
   </Container>
 </template>
