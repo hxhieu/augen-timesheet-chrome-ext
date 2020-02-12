@@ -10,7 +10,7 @@
 <script lang="ts">
 import styled from 'vue-styled-components'
 import Cookies from 'js-cookie'
-import { createComponent, reactive } from '@vue/composition-api'
+import { createComponent, ref, reactive } from '@vue/composition-api'
 import { ThemeProvider } from 'vue-styled-components'
 
 const Main = styled.div`
@@ -31,10 +31,38 @@ const TopBar = () =>
 export default createComponent({
   components: { ThemeProvider, Main, TopBar },
   setup() {
+    const themes = {
+      'dark-theme': {
+        bg: '#000',
+        colour: '#fff',
+      },
+      'light-theme': {
+        bg: '#fff',
+        colour: '#333',
+      },
+    }
+
+    const getTheme = async () =>
+      new Promise<'dark-theme' | 'light-theme'>(resolve => {
+        chrome.storage.local.get(['theme'], function(result) {
+          if (result.key) {
+            resolve(result.key)
+          } else {
+            const defaultTheme = 'light-theme'
+            chrome.storage.local.set({ theme: defaultTheme }, function() {
+              resolve(defaultTheme)
+            })
+          }
+        })
+      })
+
     // TODO: Hook to the store
-    const theme = reactive({
-      bg: '#fff',
-      colour: '#333',
+    const theme = reactive(themes['dark-theme'])
+
+    getTheme().then((themeName: 'dark-theme' | 'light-theme') => {
+      const saved = themes[themeName]
+      theme.bg = saved.bg
+      theme.colour = saved.colour
     })
 
     return {
